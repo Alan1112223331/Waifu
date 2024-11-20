@@ -121,7 +121,8 @@ class Memory:
     async def _tag_and_add_conversations(self):
         if self.short_term_memory:
             summary, tags = await self._tag_conversations(self.short_term_memory[: self._memory_batch_size])
-            self.short_term_memory = self.short_term_memory[self._memory_batch_size :]
+            if len(self.short_term_memory) > self._memory_batch_size:
+                self.short_term_memory = self.short_term_memory[self._memory_batch_size :]
             self._add_long_term_memory(summary, tags)
             self._save_long_term_memory_to_file()
             self._save_short_term_memory_to_file()
